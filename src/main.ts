@@ -6,7 +6,8 @@ import { parse } from 'yaml';
 import * as path from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { abortOnError: false });
+
   const DOC_API = await readFile(
     path.join(__dirname, '../', 'doc', 'api.yaml'),
     'utf-8',
