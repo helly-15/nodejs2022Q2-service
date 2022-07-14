@@ -16,13 +16,9 @@ export class AuthController {
   signup(@Body(new ValidationPipe({ whitelist: true })) dto: AuthDto) {
     return this.authService.signup(dto);
   }
-  //PasrseIntPipe validates that password is a number
+
   @Post('signin')
-  signin(
-    @Body('email') email: string,
-    @Body('password', ParseIntPipe) password: string,
-  ) {
-    console.log({ email, password });
-    return this.authService.signin();
+  signin(@Body(new ValidationPipe({ whitelist: true })) dto: AuthDto) {
+    return this.authService.signin(dto);
   }
 }
