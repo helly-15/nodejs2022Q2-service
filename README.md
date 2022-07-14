@@ -70,3 +70,8 @@ npm run format
 Press <kbd>F5</kbd> to debug.
 
 For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+
+
+prisma generate - generates typescript types for prisma schema
+prisma migrate - to create migration folder with prisma schema details and pushes schema to database
+prisma studio - to explore database with browser
