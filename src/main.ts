@@ -4,6 +4,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { readFile } from 'fs/promises';
 import { parse } from 'yaml';
 import * as path from 'path';
+import { ConfigService } from '@nestjs/config';
 //import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -15,8 +16,8 @@ async function bootstrap() {
   );
   const document = parse(DOC_API);
   SwaggerModule.setup('doc', app, document);
-
-  await app.listen(4000);
+  const config = new ConfigService();
+  await app.listen(config.get('PORT'));
 }
 
 bootstrap();
