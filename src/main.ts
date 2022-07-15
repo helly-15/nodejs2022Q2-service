@@ -5,11 +5,9 @@ import { readFile } from 'fs/promises';
 import { parse } from 'yaml';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
-//import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { abortOnError: false });
-  //app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   const DOC_API = await readFile(
     path.join(__dirname, '../', 'doc', 'api.yaml'),
     'utf-8',
