@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -22,6 +23,11 @@ export class UserController {
   @Get('')
   getAllUsers(@Req() req: Request) {
     return this.userService.getAllUsers();
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id) {
+    return this.userService.getUserById(id);
   }
 
   // @Post('')
