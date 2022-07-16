@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
+import { UserDto } from './dto/user.dto';
 //import { JwtGuard } from '../auth/guard';
 
 @Controller('user')
@@ -30,8 +31,8 @@ export class UserController {
     return this.userService.getUserById(id);
   }
 
-  // @Post('')
-  // postUser(@Body(new ValidationPipe({ whitelist: true })) dto: AuthDto) {
-  //   return this.userService.postUser(dto);
-  // }
+  @Post('')
+  postUser(@Body(new ValidationPipe({ whitelist: true })) dto: UserDto) {
+    return this.userService.postUser(dto);
+  }
 }
