@@ -10,16 +10,29 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async getAllUsers() {
-    return await this.prisma.user.findMany();
+    try {
+      return await this.prisma.user.findMany();
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2001') {
+          throw new ForbiddenException('User not found');
+        }
+      }
+      throw error;
+    }
   }
 
   async getUserById(id: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-    });
-    return user;
+    try {
+      const user = await this.prisma.user.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+      });
+      return user;
+    } catch (error) {
+      throw new ForbiddenException('User not found');
+    }
   }
   async postUser(dto: UserDto) {
     const id: string = uuid();
@@ -34,12 +47,14 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken and not unique');
-        }
-      }
-      throw error;
+      throw new Error('Login and password should be strings');
     }
+  }
+
+  async deleteUser(id: string) {
+    const user = await this.prisma.user.delete({
+      where: { id: id },
+    });
+    return user;
   }
 }

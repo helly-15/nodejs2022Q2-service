@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -34,5 +35,10 @@ export class UserController {
   @Post('')
   postUser(@Body(new ValidationPipe({ whitelist: true })) dto: UserDto) {
     return this.userService.postUser(dto);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id) {
+    return this.userService.deleteUser(id);
   }
 }
