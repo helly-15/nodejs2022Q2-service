@@ -5,13 +5,14 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
+import { UpdateDto, UserDto } from './dto/user.dto';
 //import { JwtGuard } from '../auth/guard';
 
 @Controller('user')
@@ -40,5 +41,10 @@ export class UserController {
   @Delete(':id')
   deleteUser(@Param('id') id) {
     return this.userService.deleteUser(id);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateDto: UpdateDto) {
+    return this.userService.updateUser(id, updateDto);
   }
 }

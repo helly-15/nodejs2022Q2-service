@@ -2,7 +2,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { UserDto } from './dto/user.dto';
+import { UpdateDto, UserDto } from './dto/user.dto';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -56,5 +56,23 @@ export class UserService {
       where: { id: id },
     });
     return user;
+  }
+
+  async updateUser(id: string, updateDto: UpdateDto) {
+    try {
+      const user = await this.prisma.user.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+      });
+      if (user.password === updateDto.oldPassword) {
+        await this.prisma.user.update({
+          where: { id: id },
+          data: { password: updateDto.newPassword },
+        });
+      } else return 'You are cheating mister, the password does not match!';
+    } catch (error) {
+      throw new ForbiddenException('User not found');
+    }
   }
 }
