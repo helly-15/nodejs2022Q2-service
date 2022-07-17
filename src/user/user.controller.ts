@@ -11,6 +11,7 @@ import {
   Req,
   Res,
   UseGuards,
+  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -48,6 +49,13 @@ export class UserController {
   }
 
   @Put(':id')
+  @UsePipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      whitelist: true,
+      transform: true,
+    }),
+  )
   update(@Param('id', ParseUUIDPipe) id, @Body() updateDto: UpdateDto) {
     return this.userService.updateUser(id, updateDto);
   }

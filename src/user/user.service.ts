@@ -34,6 +34,7 @@ export class UserService {
       throw new HttpException('User not found', 404);
     }
   }
+
   async postUser(dto: CreateUserDto) {
     const id: string = uuid();
     try {
@@ -74,24 +75,34 @@ export class UserService {
   }
 
   async updateUser(id: string, updateDto: UpdateDto) {
+    let user;
     try {
-      const user = await this.prisma.user.findUniqueOrThrow({
+      user = await this.prisma.user.findUniqueOrThrow({
         where: {
           id: id,
         },
       });
-      if (user.password === updateDto.oldPassword) {
-        await this.prisma.user.update({
-          where: { id: id },
-          data: {
-            password: updateDto.newPassword,
-            version: user.version + 1,
-            updatedAt: Date.now(),
-          },
-        });
-      } else return 'You are cheating mister, the password does not match!';
     } catch (error) {
-      throw new ForbiddenException('User not found');
+      throw new HttpException("User doesn't exist", 404);
     }
+
+    if (user.password !== updateDto.oldPassword) {
+      throw new HttpException('The password does not match!', 403);
+    }
+    const newUser = await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        password: updateDto.newPassword,
+        version: user.version + 1,
+        updatedAt: Date.now(),
+      },
+    });
+    return {
+      id: id,
+      login: newUser.login,
+      version: newUser.version,
+      createdAt: newUser.createdAt,
+      updatedAt: newUser.updatedAt,
+    };
   }
 }
