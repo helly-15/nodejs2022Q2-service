@@ -49,10 +49,10 @@ model Album {
 model Track {
   id          String     @id
   name        String
-  artistId    String
-  artist      Artist     @relation(fields: [artistId], references: [id])
-  albumId     String
-  album       Album      @relation(fields: [albumId], references: [id])
+  artistId    String?
+  artist      Artist?    @relation(fields: [artistId], references: [id])
+  albumId     String?
+  album       Album?     @relation(fields: [albumId], references: [id])
   duration    Int
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId Int?
