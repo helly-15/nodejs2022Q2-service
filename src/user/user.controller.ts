@@ -3,16 +3,19 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Req,
+  Res,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
-import { UpdateDto, UserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateDto } from './dto/user.dto';
 //import { JwtGuard } from '../auth/guard';
 
 @Controller('user')
@@ -29,22 +32,23 @@ export class UserController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id) {
+  getUserById(@Param('id', ParseUUIDPipe) id) {
     return this.userService.getUserById(id);
   }
 
   @Post('')
-  postUser(@Body(new ValidationPipe({ whitelist: true })) dto: UserDto) {
+  postUser(@Body(new ValidationPipe({ whitelist: true })) dto: CreateUserDto) {
     return this.userService.postUser(dto);
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id) {
+  @HttpCode(204)
+  deleteUser(@Param('id', ParseUUIDPipe) id) {
     return this.userService.deleteUser(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateDto: UpdateDto) {
+  update(@Param('id', ParseUUIDPipe) id, @Body() updateDto: UpdateDto) {
     return this.userService.updateUser(id, updateDto);
   }
 }
