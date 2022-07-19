@@ -20,10 +20,10 @@ npm install
 ## Running application
 
 ```
-docker build . -t containername
-docker run -p 8080:8080 containername
+docker-compose up
 
 npm db:dev:restart
+
 npm start
 ```
 

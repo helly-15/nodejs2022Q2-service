@@ -1,5 +1,14 @@
 version: '3.8'
 services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - dev-db
+
   dev-db:
     image: postgres:13
     ports:
@@ -10,17 +19,6 @@ services:
       POSTGRES_DB: nest
     networks:
       - freecodecamp
-  node:
-    build: .
-    ports:
-      - 5435:5432
-    depends_on:
-      - dev-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: nest
-    networks:
-      - freecodecamp
+
 networks:
   freecodecamp:
