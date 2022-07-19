@@ -10,10 +10,12 @@ services:
       POSTGRES_DB: nest
     networks:
       - freecodecamp
-  test-db:
-    image: postgres:13
+  node:
+    build: .
     ports:
       - 5435:5432
+    depends_on:
+      - dev-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123

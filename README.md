@@ -21,7 +21,7 @@ npm install
 
 ```
 docker build . -t containername
-docker run containername
+docker run -p 8080:8080 containername
 
 npm db:dev:restart
 npm start
