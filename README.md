@@ -20,10 +20,13 @@ npm install
 ## Running application
 
 ```
-docker-compose up
+npm run db:dev:restart
+docker build . -t containername
+docker run containername
 
-npm db:dev:restart
+or 
 
+npm run db:dev:restart
 npm start
 ```
 
