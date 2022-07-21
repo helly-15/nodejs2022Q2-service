@@ -29,8 +29,6 @@ model Artist {
   id          String     @id
   name        String
   grammy      Boolean
-  Album       Album[]
-  Track       Track[]
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId Int?
 }
