@@ -1,54 +1,54 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { ArtistDto } from './dto/artist.dto';
+import { AlbumDto } from './dto/album.dto';
 import { v4 as uuid } from 'uuid';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 
 @Injectable()
-export class ArtistService {
+export class AlbumService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllArtists() {
+  async getAllAlbums() {
     try {
-      return await this.prisma.artist.findMany();
+      return await this.prisma.album.findMany();
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2001') {
-          throw new ForbiddenException('Artist not found');
+          throw new ForbiddenException('Album not found');
         }
       }
       throw error;
     }
   }
 
-  async getArtistById(id: string) {
+  async getAlbumById(id: string) {
     try {
-      const artist = await this.prisma.artist.findUniqueOrThrow({
+      const album = await this.prisma.album.findUniqueOrThrow({
         where: {
           id: id,
         },
       });
-      return artist;
+      return album;
     } catch (error) {
-      throw new HttpException('Artist not found', 404);
+      throw new HttpException('Album not found', 404);
     }
   }
 
-  async postArtist(dto: ArtistDto) {
+  async postAlbum(dto: AlbumDto) {
     const id: string = uuid();
     const data = {
       id: id,
       ...dto,
     };
-    return await this.prisma.artist.create({
+    return await this.prisma.album.create({
       data,
     });
   }
 
-  async deleteArtist(id: string) {
+  async deleteAlbum(id: string) {
     try {
-      return await this.prisma.artist.delete({
+      return await this.prisma.album.delete({
         where: { id: id },
       });
     } catch (error) {
@@ -56,24 +56,24 @@ export class ArtistService {
     }
   }
 
-  async updateArtist(id: string, updateDto: ArtistDto) {
+  async updateAlbum(id: string, updateDto: AlbumDto) {
     if (
       typeof updateDto.name !== 'string' ||
-      typeof updateDto.grammy !== 'boolean'
+      typeof updateDto.year !== 'number'
     ) {
       throw new HttpException('Incorrect dto', 400);
     }
     try {
-      await this.prisma.artist.findUniqueOrThrow({
+      await this.prisma.album.findUniqueOrThrow({
         where: {
           id: id,
         },
       });
     } catch (error) {
-      throw new HttpException("Artist doesn't exist", 404);
+      throw new HttpException("Album doesn't exist", 404);
     }
     try {
-      return await this.prisma.artist.update({
+      return await this.prisma.album.update({
         where: { id: id },
         data: {
           ...updateDto,

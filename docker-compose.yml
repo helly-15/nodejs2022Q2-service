@@ -1,17 +1,17 @@
 version: '3.8'
 services:
-  node:
-    build: .
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - dev-db
+  #node:
+   # build: .
+    #  dockerfile: Dockerfile
+    #restart: always
+    #ports:
+     # - 8080:8080
+    #depends_on:
+     # - dev-db
 
   dev-db:
     image: postgres:13
-    restart: always
+    #restart: always
     ports:
       - 5434:5432
     environment:
