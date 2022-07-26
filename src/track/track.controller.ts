@@ -9,13 +9,15 @@ import {
   Post,
   Put,
   Req,
+  UseFilters,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { TrackService } from './track.service';
 import { TrackDto } from './dto/track.dto';
-
+import { HttpExceptionFilter } from '../exceptions/http-exception.filter';
+@UseFilters(new HttpExceptionFilter())
 @Controller('track')
 export class TrackController {
   constructor(private trackService: TrackService) {}

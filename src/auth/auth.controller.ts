@@ -2,12 +2,13 @@
 //   Body,
 //   Controller,
 //   ParseIntPipe,
-//   Post,
-//   ValidationPipe,
-// } from '@nestjs/common';
+//   Post, UseFilters,
+//   ValidationPipe
+// } from "@nestjs/common";
 // import { AuthService } from './auth.service';
 // import { AuthDto } from './dto';
-//
+// import { HttpExceptionFilter } from "../exceptions/http-exception.filter";
+// @UseFilters(new HttpExceptionFilter())
 // @Controller('auth')
 // export class AuthController {
 //   constructor(private authService: AuthService) {}

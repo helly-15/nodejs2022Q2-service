@@ -8,14 +8,15 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  Req,
+  Req, UseFilters,
   UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+  ValidationPipe
+} from "@nestjs/common";
 import { Request } from 'express';
 import { AlbumService } from './album.service';
 import { AlbumDto } from './dto/album.dto';
-
+import { HttpExceptionFilter } from "../exceptions/http-exception.filter";
+@UseFilters(new HttpExceptionFilter())
 @Controller('Album')
 export class AlbumController {
   constructor(private albumService: AlbumService) {}

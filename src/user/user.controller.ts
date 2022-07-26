@@ -9,16 +9,17 @@ import {
   Post,
   Put,
   Req,
-  Res,
+  Res, UseFilters,
   UseGuards,
   UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+  ValidationPipe
+} from "@nestjs/common";
 import { Request } from 'express';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateDto } from './dto/user.dto';
+import { HttpExceptionFilter } from "../exceptions/http-exception.filter";
 //import { JwtGuard } from '../auth/guard';
-
+@UseFilters(new HttpExceptionFilter())
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
