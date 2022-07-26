@@ -5,9 +5,15 @@ import { readFile } from 'fs/promises';
 import { parse } from 'yaml';
 import * as path from 'path';
 import { ConfigService } from '@nestjs/config';
+import { MyLogger } from './logger/myLogger';
+import * as express from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { abortOnError: false });
+  const app = await NestFactory.create(AppModule, {
+    abortOnError: false,
+    logger: new MyLogger(),
+  });
+  app.use(express.json());
   const DOC_API = await readFile(
     path.join(__dirname, '../', 'doc', 'api.yaml'),
     'utf-8',

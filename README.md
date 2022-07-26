@@ -20,7 +20,7 @@ npm install
 ## Running application
 
 ```
-
+open docker desktop
 npm run db:dev:restart
 npm start
 ```
