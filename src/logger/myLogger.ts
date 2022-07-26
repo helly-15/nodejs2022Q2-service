@@ -1,18 +1,29 @@
 import { LoggerService } from '@nestjs/common';
+import * as fs from 'fs';
 
 export class MyLogger implements LoggerService {
   /**
    * Write a 'log' level log.
    */
   log(message: any, ...optionalParams: any[]) {
-    console.log(message);
+    fs.appendFile('logs.txt', message, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+    console.log(message + ' ---- find the same message in file logs.txt');
   }
 
   /**
    * Write an 'error' level log.
    */
   error(message: any, ...optionalParams: any[]) {
-    console.log(message);
+    fs.appendFile('errors.txt', message, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+    console.log(message + ' ---- find the same message in file errors.txt');
   }
 
   /**
