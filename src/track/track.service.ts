@@ -4,6 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { TrackDto } from './dto/track.dto';
 import { v4 as uuid } from 'uuid';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
+import { CustomException } from '../exceptions/myException';
 
 @Injectable()
 export class TrackService {
@@ -31,7 +32,7 @@ export class TrackService {
       });
       return track;
     } catch (error) {
-      throw new HttpException('Track not found', 404);
+      throw new CustomException('Track not found', 404);
     }
   }
 
@@ -52,7 +53,7 @@ export class TrackService {
         where: { id: id },
       });
     } catch (error) {
-      throw new HttpException("User doesn't exist", 404);
+      throw new CustomException("User doesn't exist", 404);
     }
   }
 
@@ -64,7 +65,7 @@ export class TrackService {
         },
       });
     } catch (error) {
-      throw new HttpException("Track doesn't exist", 404);
+      throw new CustomException("Track doesn't exist", 404);
     }
 
     return await this.prisma.track.update({

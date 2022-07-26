@@ -4,6 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { CreateUserDto, UpdateDto } from './dto/user.dto';
 import { v4 as uuid } from 'uuid';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
+import { CustomException } from '../exceptions/myException';
 
 @Injectable()
 export class UserService {
@@ -31,7 +32,7 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      throw new HttpException('User not found', 404);
+      throw new CustomException('User not found', 404);
     }
   }
 
@@ -70,7 +71,7 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      throw new HttpException("User doesn't exist", 404);
+      throw new CustomException("User doesn't exist", 404);
     }
   }
 
@@ -83,11 +84,11 @@ export class UserService {
         },
       });
     } catch (error) {
-      throw new HttpException("User doesn't exist", 404);
+      throw new CustomException("User doesn't exist", 404);
     }
 
     if (user.password !== updateDto.oldPassword) {
-      throw new HttpException('The password does not match!', 403);
+      throw new CustomException('The password does not match!', 403);
     }
     const newUser = await this.prisma.user.update({
       where: { id: id },
