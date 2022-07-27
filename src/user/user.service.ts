@@ -3,8 +3,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { CreateUserDto, UpdateDto } from './dto/user.dto';
 import { v4 as uuid } from 'uuid';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { CustomException } from '../exceptions/myException';
+import * as argon from "argon2";
 
 @Injectable()
 export class UserService {
@@ -86,14 +86,15 @@ export class UserService {
     } catch (error) {
       throw new CustomException("User doesn't exist", 404);
     }
-
-    if (user.password !== updateDto.oldPassword) {
+    const hashOfOldPassword = await argon.hash(updateDto.oldPassword);
+    const hashOfNewPassword = await argon.hash(updateDto.newPassword);
+    if (user.password !== hashOfOldPassword) {
       throw new CustomException('The password does not match!', 403);
     }
     const newUser = await this.prisma.user.update({
       where: { id: id },
       data: {
-        password: updateDto.newPassword,
+        password: hashOfNewPassword,
         version: user.version + 1,
         updatedAt: Date.now(),
       },
