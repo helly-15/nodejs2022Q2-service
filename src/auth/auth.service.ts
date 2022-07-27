@@ -40,8 +40,7 @@ export class AuthService {
   }
 
   async signin(dto: AuthDto) {
-    // find the user by email
-    const hash = await argon.hash(dto.password);
+    // find the user by login
     const user = await this.prisma.user.findUnique({
       where: {
         login: dto.login,
@@ -56,15 +55,15 @@ export class AuthService {
     // if password incorrect throw exception
     if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
 
-    return this.signToken(user.login, user.password);
+    return this.signToken(user.id, user.login);
   }
   async signToken(
     userId: string,
-    email: string,
+    login: string,
   ): Promise<{ access_token: string }> {
     const payload = {
       sub: userId,
-      email,
+      login,
     };
     const secret = this.config.get('JWT_SECRET_KEY');
 
