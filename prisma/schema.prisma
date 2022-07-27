@@ -12,12 +12,15 @@ datasource db {
 
 model User {
   id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  hash      String
-  firstName String?
-  lastName  String?
+  createdAt Int
+  updatedAt Int
+//  email     String   @unique
+//  hash      String
+  //firstName String?
+  //lastName  String?
+  login     String    @unique
+  password  String
+  version   Int       @default(1)
 
   @@map("users")
 }
@@ -36,8 +39,8 @@ model Album {
   id          String     @id
   name        String
   year        Int
-  artistId    String
-  artist      Artist     @relation(fields: [artistId], references: [id])
+  artistId    String?
+  artist      Artist?     @relation(fields: [artistId], references: [id])
   Track       Track[]
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId Int?
@@ -46,10 +49,10 @@ model Album {
 model Track {
   id          String     @id
   name        String
-  artistId    String
-  artist      Artist     @relation(fields: [artistId], references: [id])
-  albumId     String
-  album       Album      @relation(fields: [albumId], references: [id])
+  artistId    String?
+  artist      Artist?    @relation(fields: [artistId], references: [id])
+  albumId     String?
+  album       Album?     @relation(fields: [albumId], references: [id])
   duration    Int
   Favorites   Favorites? @relation(fields: [favoritesId], references: [id])
   favoritesId Int?

@@ -1,7 +1,17 @@
 version: '3.8'
 services:
+  #node:
+   # build: .
+    #  dockerfile: Dockerfile
+    #restart: always
+    #ports:
+     # - 8080:8080
+    #depends_on:
+     # - dev-db
+
   dev-db:
     image: postgres:13
+    #restart: always
     ports:
       - 5434:5432
     environment:
@@ -9,16 +19,9 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: nest
     networks:
-      - freecodecamp
-  test-db:
-    image: postgres:13
-    ports:
-      - 5435:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: nest
-    networks:
-      - freecodecamp
+      - rsschoollena
+
 networks:
-  freecodecamp:
+  rsschoollena:
+    name: rsschoollena
+    driver: bridge
